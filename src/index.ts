@@ -1,9 +1,13 @@
 import { ChildProcess, spawn } from "child_process";
 import { join } from "path";
+import { existsSync } from "fs";
 import Serverless from "serverless";
 import { ServerlessPluginCommand } from "../types/serverless-plugin-command";
 
-const NODE_MODULES_PATH = join(process.cwd(), "./node_modules/.bin");
+let NODE_MODULES_PATH = join(process.cwd(), "./node_modules/.bin");
+if (!existsSync(join(NODE_MODULES_PATH, "aws-ses-local"))) {
+  NODE_MODULES_PATH = join(__dirname, "..", "./node_modules/.bin");
+}
 
 interface SeverlessOfflineSesLocalOptions {
   stages?: string[];
